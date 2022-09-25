@@ -27,58 +27,22 @@ void on_pwm_wrap() {
 // this is the interrupt handler, called each time the PWM counter wraps
     static int fade = 0;
     static bool going_up = true;
-    // ALTERED CODE: START ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\~
-    static int counter = 0;
-    // ALTERED CODE: END ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/////~
     // Clear the interrupt flag that brought us here
     pwm_clear_irq(pwm_gpio_to_slice_num(PICO_DEFAULT_LED_PIN));
 
-    // ALTERED CODE: START ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\~
-    // It will fade up and down twice slowly and then twice 15x faster, and repeat
-
-    // Fade up & down SLOW
-    if (counter < 4) {
-        if (going_up) {
-            ++fade;
-            if (fade > MAX_LED_BRIGHTNESS) {
-                fade = MAX_LED_BRIGHTNESS;
-                going_up = false;
-                ++counter;
-            }
-        } else {
-            --fade;
-            if (fade < MIN_LED_BRIGHTNESS) {
-                fade = MIN_LED_BRIGHTNESS;
-                going_up = true;
-                ++counter;
-            }
-        
+    if (going_up) {
+        ++fade;
+        if (fade > MAX_LED_BRIGHTNESS) {
+            fade = MAX_LED_BRIGHTNESS;
+            going_up = false;
         }
-    // Fade up & down FAST
-    } else if (counter >= 4) {
-        if (going_up) {
-            fade = fade + 15;
-            if (fade > MAX_LED_BRIGHTNESS) {
-                fade = MAX_LED_BRIGHTNESS;
-                going_up = false;
-                ++counter;
-            }
-        } else {
-            fade = fade - 15;
-            if (fade < MIN_LED_BRIGHTNESS) {
-                fade = MIN_LED_BRIGHTNESS;
-                going_up = true;
-                ++counter;
-            }
+    } else {
+        --fade;
+        if (fade < MIN_LED_BRIGHTNESS) {
+            fade = MIN_LED_BRIGHTNESS;
+            going_up = true;
         }
     }
-
-    if (counter >= 8) {
-        counter = 0;
-    }
-
-    // ALTERED CODE: END ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/////~
-
     // Square the fade value to make the LED's brightness appear more linear
     // note uint16_t range (0-65535)
     pwm_set_gpio_level(PICO_DEFAULT_LED_PIN, fade * fade);
@@ -103,13 +67,8 @@ int main(void) {
     // Get some sensible defaults for the slice configuration. By default, the
     // counter is allowed to wrap over its maximum range (0 to 2**16-1)
     pwm_config config = pwm_get_default_config();
-
     // Set divider, reduces counter clock to sysclock/this value
-    // ALTERED CODE: START ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\~
-    // Now it is sysclock / 8.f instead of 4.f --> clock is slowed down by half
-    pwm_config_set_clkdiv(&config, 8.f);
-    // ALTERED CODE: END ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/////~
-
+    pwm_config_set_clkdiv(&config, 4.f);
     // Load the configuration into our PWM slice, and set it running.
     pwm_init(slice_num, &config, true);
 
