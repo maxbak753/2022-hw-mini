@@ -1,3 +1,20 @@
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\~
+// ALTERED CODE: START ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\~
+//
+// Maxwell Bakalos
+// U96572173
+// 9/25/2022
+// EC 463 Senior Design Project
+//
+// The code has been altered:
+// *  There are two slow brightness fades up & down
+//    followed by two fast brightness fades up & down
+// *  The clock has been slowed by half in main(void)
+//
+// ALTERED CODE: END ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/////~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/////~
+
+
 /**
  * Copyright (c) 2020 Raspberry Pi (Trading) Ltd.
  *
@@ -22,12 +39,6 @@
 
 #define MAX_LED_BRIGHTNESS 255
 #define MIN_LED_BRIGHTNESS 0
-
-
-// ALTERED CODE: START ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\~
-// The code has been altered so there are two slow brightness fades up & down
-// followed by two fast brightness fades up & down
-// ALTERED CODE: END ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/////~
 
 
 void on_pwm_wrap() {
