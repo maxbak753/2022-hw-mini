@@ -23,11 +23,19 @@
 #define MAX_LED_BRIGHTNESS 255
 #define MIN_LED_BRIGHTNESS 0
 
+
+// ALTERED CODE: START ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\~
+// The code has been altered so there are two slow brightness fades up & down
+// followed by two fast brightness fades up & down
+// ALTERED CODE: END ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/////~
+
+
 void on_pwm_wrap() {
 // this is the interrupt handler, called each time the PWM counter wraps
     static int fade = 0;
     static bool going_up = true;
     // ALTERED CODE: START ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\\~
+    // Counts how many fades & down have occurred
     static int counter = 0;
     // ALTERED CODE: END ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/////~
     // Clear the interrupt flag that brought us here
